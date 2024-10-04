@@ -19,6 +19,7 @@ jobs:
 
       - name: Build with Maven
         env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           JWT_EXPIRATION: ${{ secrets.JWT_EXPIRATION }}
         run: mvn --batch-mode --update-snapshots verify

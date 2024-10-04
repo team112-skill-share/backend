@@ -9,11 +9,9 @@ public class GlobalSetupExtension implements BeforeAllCallback {
     public void beforeAll(ExtensionContext extensionContext) throws Exception {
         if (System.getenv("CI") == null) {
             Dotenv dotenv = Dotenv.configure().load();
-            System.setProperty("MYSQL_ROOT_PASSWORD", dotenv.get("MYSQL_ROOT_PASSWORD"));
             System.setProperty("JWT_SECRET", dotenv.get("JWT_SECRET"));
             System.setProperty("JWT_EXPIRATION", dotenv.get("JWT_EXPIRATION"));
         } else {
-            System.setProperty("MYSQL_ROOT_PASSWORD", System.getenv("MYSQL_ROOT_PASSWORD"));
             System.setProperty("JWT_SECRET", System.getenv("JWT_SECRET"));
             System.setProperty("JWT_EXPIRATION", System.getenv("JWT_EXPIRATION"));
         }
