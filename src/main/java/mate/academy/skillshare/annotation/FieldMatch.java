@@ -8,17 +8,20 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import org.apache.commons.beanutils.BeanUtils;
+import java.lang.reflect.Method;
 
-@Constraint(validatedBy = { FieldMatch.Validator.class })
+@Constraint(validatedBy = {FieldMatch.Validator.class})
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE })
+@Target({ElementType.TYPE})
 public @interface FieldMatch {
     String message() default "Fields do not match";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 
     String firstField();
+
     String secondField();
 
     class Validator implements ConstraintValidator<FieldMatch, Object> {
@@ -36,8 +39,8 @@ public @interface FieldMatch {
         @Override
         public boolean isValid(Object value, ConstraintValidatorContext context) {
             try {
-                final Object firstFieldValue = BeanUtils.getProperty(value, firstField);
-                final Object secondFieldValue = BeanUtils.getProperty(value, secondField);
+                final Object firstFieldValue = getProperty(value, firstField);
+                final Object secondFieldValue = getProperty(value, secondField);
 
                 boolean valid = firstFieldValue != null && firstFieldValue.equals(secondFieldValue);
                 if (!valid) {
@@ -50,6 +53,11 @@ public @interface FieldMatch {
             } catch (Exception e) {
                 throw new RuntimeException("Can't compare passwords", e);
             }
+        }
+
+        private Object getProperty(Object object, String fieldName) throws Exception {
+            Method method = object.getClass().getMethod(fieldName);
+            return method.invoke(object);
         }
     }
 }
