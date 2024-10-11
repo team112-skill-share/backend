@@ -2,7 +2,9 @@ package mate.academy.skillshare.service.impl;
 
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import mate.academy.skillshare.dto.user.UserEmailChangeRequestDto;
 import mate.academy.skillshare.dto.user.UserInfoRequestDto;
+import mate.academy.skillshare.dto.user.UserPasswordChangeRequestDto;
 import mate.academy.skillshare.dto.user.UserRegistrationRequestDto;
 import mate.academy.skillshare.dto.user.UserResponseDto;
 import mate.academy.skillshare.exception.EntityNotFoundException;
@@ -27,12 +29,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto register(UserRegistrationRequestDto requestDto)
             throws RegistrationException {
-        if (userRepository.findByEmail(requestDto.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(requestDto.email()).isPresent()) {
             throw new RegistrationException("Can't register new user. "
                     + "User with this email already exists");
         }
         User user = userMapper.toModel(requestDto);
-        user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
+        user.setPassword(passwordEncoder.encode(requestDto.password()));
         Role role = roleRepository.findByRoleName(Role.RoleName.ROLE_USER);
         user.setRoles(Set.of(role));
         return userMapper.toDto(userRepository.save(user));
@@ -50,5 +52,32 @@ public class UserServiceImpl implements UserService {
                 new EntityNotFoundException("Can't find user by id: " + id));
         User updatedUser = userMapper.updateInfo(user, requestDto);
         return userMapper.toDto(userRepository.save(updatedUser));
+    }
+
+    @Override
+    public UserResponseDto updatePassword(Long id, UserPasswordChangeRequestDto requestDto) {
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Can't find user by id: " + id));
+        if (!passwordEncoder.matches(requestDto.currentPassword(), user.getPassword())) {
+            throw new RuntimeException("Current password is incorrect");
+        }
+        user.setPassword(passwordEncoder.encode(requestDto.newPassword()));
+        return userMapper.toDto(userRepository.save(user));
+    }
+
+    @Override
+    public UserResponseDto updateEmail(Long id, UserEmailChangeRequestDto requestDto) {
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Can't find user by id: " + id));
+        String currentEmail = user.getEmail();
+        String newEmail = requestDto.email();
+        if (currentEmail.equals(newEmail)) {
+            return userMapper.toDto(user);
+        }
+        if (userRepository.findByEmail(newEmail).isPresent()) {
+            throw new RuntimeException("User with this email already exists");
+        }
+        user.setEmail(newEmail);
+        return userMapper.toDto(userRepository.save(user));
     }
 }

@@ -1,0 +1,58 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-reviews-table
+      author: oleksandr
+      changes:
+        - createTable:
+            tableName: reviews
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: course_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rating
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: comment
+                  type: text
+              - column:
+                  name: timestamp
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_deleted
+                  type: BIT(1)
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: reviews
+            baseColumnNames: course_id
+            constraintName: fk_reviews_courses
+            referencedTableName: courses
+            referencedColumnNames: id
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: reviews
+            baseColumnNames: user_id
+            constraintName: fk_reviews_users
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE

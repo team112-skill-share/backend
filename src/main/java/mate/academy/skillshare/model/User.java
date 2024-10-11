@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,8 +34,8 @@ public class User implements UserDetails {
     private String email;
     @Column(nullable = false)
     private String password;
-    private String firstName;
-    private String lastName;
+    private String fullName;
+    private LocalDate birthDate;
     private String phoneNumber;
     @Column(nullable = false)
     private boolean isDeleted;

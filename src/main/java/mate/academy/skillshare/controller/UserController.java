@@ -4,12 +4,15 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import mate.academy.skillshare.dto.user.UserEmailChangeRequestDto;
 import mate.academy.skillshare.dto.user.UserInfoRequestDto;
+import mate.academy.skillshare.dto.user.UserPasswordChangeRequestDto;
 import mate.academy.skillshare.dto.user.UserResponseDto;
 import mate.academy.skillshare.model.User;
 import mate.academy.skillshare.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,5 +40,25 @@ public class UserController {
     ) {
         User user = (User) authentication.getPrincipal();
         return userService.updateInfo(user.getId(), requestDto);
+    }
+
+    @Operation(summary = "Update user password", description = "Update current user's password")
+    @PatchMapping("/me/password")
+    public UserResponseDto updateUserPassword(
+            Authentication authentication,
+            @RequestBody @Valid UserPasswordChangeRequestDto requestDto
+    ) {
+        User user = (User) authentication.getPrincipal();
+        return userService.updatePassword(user.getId(), requestDto);
+    }
+
+    @Operation(summary = "Update user email", description = "Update current user's email")
+    @PatchMapping("/me/email")
+    public UserResponseDto updateUserEmail(
+            Authentication authentication,
+            @RequestBody @Valid UserEmailChangeRequestDto requestDto
+    ) {
+        User user = (User) authentication.getPrincipal();
+        return userService.updateEmail(user.getId(), requestDto);
     }
 }
