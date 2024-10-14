@@ -10,5 +10,7 @@ public interface CommentService {
 
     List<CommentDto> getAll(Long articleId, Pageable pageable);
 
+    CommentDto update(Long userId, Long id, CreateCommentRequestDto requestDto);
+
     void delete(Long id);
 }

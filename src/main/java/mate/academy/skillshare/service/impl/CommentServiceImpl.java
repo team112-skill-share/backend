@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.skillshare.dto.comment.CommentDto;
 import mate.academy.skillshare.dto.comment.CreateCommentRequestDto;
+import mate.academy.skillshare.exception.AuthenticationException;
 import mate.academy.skillshare.exception.EntityNotFoundException;
 import mate.academy.skillshare.mapper.CommentMapper;
 import mate.academy.skillshare.model.Article;
@@ -40,6 +41,17 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentDto> getAll(Long articleId, Pageable pageable) {
         return commentMapper.toDtoList(
                 commentRepository.findAllByArticleId(articleId, pageable).getContent());
+    }
+
+    @Override
+    public CommentDto update(Long userId, Long id, CreateCommentRequestDto requestDto) {
+        Comment comment = commentRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Can't find comment by id: " + id));
+        if (!comment.getUser().getId().equals(userId)) {
+            throw new AuthenticationException("Comment can be updated only by its creator");
+        }
+        comment.setComment(requestDto.comment());
+        return commentMapper.toDto(commentRepository.save(comment));
     }
 
     @Override

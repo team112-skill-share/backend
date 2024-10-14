@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.skillshare.dto.course.CourseDto;
+import mate.academy.skillshare.dto.course.CourseSearchParameters;
 import mate.academy.skillshare.dto.course.CreateCourseRequestDto;
 import mate.academy.skillshare.service.CourseService;
 import org.springdoc.core.annotations.ParameterObject;
@@ -40,6 +41,14 @@ public class CourseController {
     @GetMapping
     public List<CourseDto> getAllCourses(@ParameterObject @PageableDefault Pageable pageable) {
         return courseService.getAll(pageable);
+    }
+
+    @Operation(summary = "Search for specific courses",
+            description = "Search for specific courses by required criteria")
+    @GetMapping("/search")
+    public List<CourseDto> searchCourses(CourseSearchParameters searchParameters,
+                                         @ParameterObject @PageableDefault Pageable pageable) {
+        return courseService.search(searchParameters, pageable);
     }
 
     @Operation(summary = "Retrieve a course", description = "Retrieve a course by id")

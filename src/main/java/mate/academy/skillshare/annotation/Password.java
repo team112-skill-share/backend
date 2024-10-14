@@ -6,7 +6,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import mate.academy.skillshare.security.PasswordConstraintValidator;
+import mate.academy.skillshare.security.internal.PasswordConstraintValidator;
 
 @Constraint(validatedBy = PasswordConstraintValidator.class)
 @Target({ ElementType.FIELD, ElementType.PARAMETER })

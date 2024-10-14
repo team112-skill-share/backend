@@ -11,8 +11,11 @@ import mate.academy.skillshare.dto.user.UserResponseDto;
 import mate.academy.skillshare.model.User;
 import mate.academy.skillshare.service.UserService;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,5 +63,27 @@ public class UserController {
     ) {
         User user = (User) authentication.getPrincipal();
         return userService.updateEmail(user.getId(), requestDto);
+    }
+
+    @Operation(summary = "Add a course to favourites",
+            description = "Add a course to user's favourites")
+    @PostMapping("/me/favourites/{courseId}")
+    public UserResponseDto addFavourite(
+            Authentication authentication,
+            @PathVariable Long courseId
+    ) {
+        User user = (User) authentication.getPrincipal();
+        return userService.addFavouriteCourse(user.getId(), courseId);
+    }
+
+    @Operation(summary = "Remove a course from favourites",
+            description = "Remove a course from user's favourites")
+    @DeleteMapping("/me/favourites/{courseId}")
+    public UserResponseDto removeFavourite(
+            Authentication authentication,
+            @PathVariable Long courseId
+    ) {
+        User user = (User) authentication.getPrincipal();
+        return userService.removeFavouriteCourse(user.getId(), courseId);
     }
 }

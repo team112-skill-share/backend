@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-is-google-account-to-user
+      author: oleksandr
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: is_google_account
+                  type: BIT(1)
+                  constraints:
+                    nullable: false
