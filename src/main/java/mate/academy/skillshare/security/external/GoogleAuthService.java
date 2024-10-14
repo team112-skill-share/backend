@@ -1,6 +1,5 @@
 package mate.academy.skillshare.security.external;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -30,14 +29,13 @@ import org.springframework.web.client.RestTemplate;
 @Service
 @RequiredArgsConstructor
 public class GoogleAuthService {
-    private static final Dotenv dotenv = Dotenv.load();
     private static final String TOKEN_URL = "https://oauth2.googleapis.com/token";
     private static final String USER_INFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
-    @Value("${spring.security.oauth2.client.registration.google.client-id}")
-    private static final String CLIENT_ID = dotenv.get("GOOGLE_CLIENT_ID");
-    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
-    private static final String CLIENT_SECRET = dotenv.get("GOOGLE_CLIENT_SECRET");
     private static final String REDIRECT_URI = "http://localhost:8080/api/auth/google/callback";
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
+    private static String CLIENT_ID;
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
+    private static String CLIENT_SECRET;
     private final JwtUtil jwtTokenProvider;
     private final UserRepository userRepository;
     private final UserService userService;
