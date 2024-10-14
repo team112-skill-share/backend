@@ -15,6 +15,7 @@ import mate.academy.skillshare.model.User;
 import mate.academy.skillshare.repository.user.UserRepository;
 import mate.academy.skillshare.security.internal.JwtUtil;
 import mate.academy.skillshare.service.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -32,7 +33,9 @@ public class GoogleAuthService {
     private static final Dotenv dotenv = Dotenv.load();
     private static final String TOKEN_URL = "https://oauth2.googleapis.com/token";
     private static final String USER_INFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private static final String CLIENT_ID = dotenv.get("GOOGLE_CLIENT_ID");
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
     private static final String CLIENT_SECRET = dotenv.get("GOOGLE_CLIENT_SECRET");
     private static final String REDIRECT_URI = "http://localhost:8080/api/auth/google/callback";
     private final JwtUtil jwtTokenProvider;
