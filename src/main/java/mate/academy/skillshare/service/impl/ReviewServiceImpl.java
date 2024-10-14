@@ -1,9 +1,11 @@
 package mate.academy.skillshare.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.skillshare.dto.review.CreateReviewRequestDto;
 import mate.academy.skillshare.dto.review.ReviewDto;
+import mate.academy.skillshare.exception.AuthenticationException;
 import mate.academy.skillshare.exception.EntityNotFoundException;
 import mate.academy.skillshare.mapper.ReviewMapper;
 import mate.academy.skillshare.model.Course;
@@ -40,6 +42,19 @@ public class ReviewServiceImpl implements ReviewService {
     public List<ReviewDto> getAll(Long courseId, Pageable pageable) {
         return reviewMapper.toDtoList(
                 reviewRepository.findAllByCourseId(courseId, pageable).getContent());
+    }
+
+    @Override
+    public ReviewDto update(Long userId, Long id, CreateReviewRequestDto requestDto) {
+        Review review = reviewRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Can't find review by id: " + id));
+        if (!review.getUser().getId().equals(userId)) {
+            throw new AuthenticationException("Review can be updated only by its creator");
+        }
+        review.setRating(requestDto.rating());
+        review.setComment(requestDto.comment());
+        review.setTimestamp(LocalDate.now());
+        return reviewMapper.toDto(reviewRepository.save(review));
     }
 
     @Override

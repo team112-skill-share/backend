@@ -10,5 +10,7 @@ public interface ReviewService {
 
     List<ReviewDto> getAll(Long courseId, Pageable pageable);
 
+    ReviewDto update(Long userId, Long id, CreateReviewRequestDto requestDto);
+
     void delete(Long id);
 }

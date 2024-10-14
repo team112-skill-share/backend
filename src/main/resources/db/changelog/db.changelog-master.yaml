@@ -17,3 +17,7 @@ databaseChangeLog:
       file: db/changelog/changes/08-create-articles-table.yaml
   - include:
       file: db/changelog/changes/09-create-comments-table.yaml
+  - include:
+      file: db/changelog/changes/10-create-users-courses-table.yaml
+  - include:
+      file: db/changelog/changes/11-add-is-google-account-to-user.yaml

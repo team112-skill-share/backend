@@ -1,4 +1,4 @@
-package mate.academy.skillshare.security;
+package mate.academy.skillshare.security.internal;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

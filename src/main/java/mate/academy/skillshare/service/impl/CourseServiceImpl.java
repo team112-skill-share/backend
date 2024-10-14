@@ -3,6 +3,7 @@ package mate.academy.skillshare.service.impl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.skillshare.dto.course.CourseDto;
+import mate.academy.skillshare.dto.course.CourseSearchParameters;
 import mate.academy.skillshare.dto.course.CreateCourseRequestDto;
 import mate.academy.skillshare.exception.EntityNotFoundException;
 import mate.academy.skillshare.mapper.CourseMapper;
@@ -10,8 +11,11 @@ import mate.academy.skillshare.model.Category;
 import mate.academy.skillshare.model.Course;
 import mate.academy.skillshare.repository.category.CategoryRepository;
 import mate.academy.skillshare.repository.course.CourseRepository;
+import mate.academy.skillshare.repository.course.CourseSpecificationBuilder;
 import mate.academy.skillshare.service.CourseService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +24,7 @@ public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
     private final CourseMapper courseMapper;
     private final CategoryRepository categoryRepository;
+    private final CourseSpecificationBuilder courseSpecificationBuilder;
 
     @Override
     public CourseDto create(CreateCourseRequestDto requestDto) {
@@ -34,6 +39,14 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<CourseDto> getAll(Pageable pageable) {
         return courseMapper.toDtoList(courseRepository.findAll(pageable).getContent());
+    }
+
+    @Override
+    public List<CourseDto> search(CourseSearchParameters searchParameters, Pageable pageable) {
+        Specification<Course> courseSpecification = courseSpecificationBuilder
+                .build(searchParameters);
+        Page<Course> projectsPage = courseRepository.findAll(courseSpecification, pageable);
+        return courseMapper.toDtoList(projectsPage.getContent());
     }
 
     @Override

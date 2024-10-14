@@ -1,4 +1,4 @@
-package mate.academy.skillshare.security;
+package mate.academy.skillshare.security.internal;
 
 import static jakarta.ws.rs.core.HttpHeaders.AUTHORIZATION;
 

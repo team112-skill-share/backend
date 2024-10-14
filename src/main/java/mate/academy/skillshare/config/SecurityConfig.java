@@ -1,7 +1,7 @@
 package mate.academy.skillshare.config;
 
 import lombok.RequiredArgsConstructor;
-import mate.academy.skillshare.security.JwtAuthenticationFilter;
+import mate.academy.skillshare.security.internal.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,6 +49,15 @@ public class CommentController {
             @PathVariable Long articleId,
             @ParameterObject @PageableDefault Pageable pageable) {
         return commentService.getAll(articleId, pageable);
+    }
+
+    @Operation(summary = "Update a comment", description = "Update a comment by id")
+    @PatchMapping("/{id}")
+    public CommentDto updateComment(Authentication authentication,
+                                    @PathVariable Long id,
+                                    @RequestBody @Valid CreateCommentRequestDto requestDto) {
+        User user = (User) authentication.getPrincipal();
+        return commentService.update(user.getId(), id, requestDto);
     }
 
     @Operation(summary = "Delete a comment", description = "Delete a comment by id")

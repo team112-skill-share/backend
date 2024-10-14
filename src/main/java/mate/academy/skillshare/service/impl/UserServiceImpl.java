@@ -1,7 +1,9 @@
 package mate.academy.skillshare.service.impl;
 
 import java.util.Set;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import mate.academy.skillshare.dto.user.GoogleUserDto;
 import mate.academy.skillshare.dto.user.UserEmailChangeRequestDto;
 import mate.academy.skillshare.dto.user.UserInfoRequestDto;
 import mate.academy.skillshare.dto.user.UserPasswordChangeRequestDto;
@@ -10,8 +12,10 @@ import mate.academy.skillshare.dto.user.UserResponseDto;
 import mate.academy.skillshare.exception.EntityNotFoundException;
 import mate.academy.skillshare.exception.RegistrationException;
 import mate.academy.skillshare.mapper.UserMapper;
+import mate.academy.skillshare.model.Course;
 import mate.academy.skillshare.model.Role;
 import mate.academy.skillshare.model.User;
+import mate.academy.skillshare.repository.course.CourseRepository;
 import mate.academy.skillshare.repository.role.RoleRepository;
 import mate.academy.skillshare.repository.user.UserRepository;
 import mate.academy.skillshare.service.UserService;
@@ -25,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final CourseRepository courseRepository;
 
     @Override
     public UserResponseDto register(UserRegistrationRequestDto requestDto)
@@ -79,5 +84,39 @@ public class UserServiceImpl implements UserService {
         }
         user.setEmail(newEmail);
         return userMapper.toDto(userRepository.save(user));
+    }
+
+    @Override
+    public UserResponseDto addFavouriteCourse(Long userId, Long courseId) {
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new EntityNotFoundException("Can't find user by id: " + userId));
+        Course course = courseRepository.findById(courseId).orElseThrow(() ->
+                new EntityNotFoundException("Can't find course by id: " + courseId));
+        user.getFavourites().add(course);
+        return userMapper.toDto(userRepository.save(user));
+    }
+
+    @Override
+    public UserResponseDto removeFavouriteCourse(Long userId, Long courseId) {
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new EntityNotFoundException("Can't find user by id: " + userId));
+        Course course = courseRepository.findById(courseId).orElseThrow(() ->
+                new EntityNotFoundException("Can't find course by id: " + courseId));
+        user.getFavourites().remove(course);
+        return userMapper.toDto(userRepository.save(user));
+    }
+
+    @Override
+    public User registerGoogleUser(GoogleUserDto googleUser) {
+        User user = userMapper.toModel(googleUser);
+        user.setPassword(generateDummyPassword());
+        Role role = roleRepository.findByRoleName(Role.RoleName.ROLE_USER);
+        user.setRoles(Set.of(role));
+        user.setGoogleAccount(true);
+        return userRepository.save(user);
+    }
+
+    private String generateDummyPassword() {
+        return UUID.randomUUID().toString();
     }
 }

@@ -1,4 +1,4 @@
-package mate.academy.skillshare.security;
+package mate.academy.skillshare.security.internal;
 
 import lombok.RequiredArgsConstructor;
 import mate.academy.skillshare.repository.user.UserRepository;
