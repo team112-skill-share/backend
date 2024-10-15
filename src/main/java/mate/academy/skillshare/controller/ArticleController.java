@@ -5,8 +5,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import mate.academy.skillshare.dto.article.ArticleDto;
 import mate.academy.skillshare.dto.article.CreateArticleRequestDto;
-import mate.academy.skillshare.model.Article;
 import mate.academy.skillshare.service.ArticleService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
@@ -32,26 +32,26 @@ public class ArticleController {
     @Operation(summary = "Create an article", description = "Create a new article")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Article createArticle(@RequestBody @Valid CreateArticleRequestDto requestDto) {
+    public ArticleDto createArticle(@RequestBody @Valid CreateArticleRequestDto requestDto) {
         return articleService.create(requestDto);
     }
 
     @Operation(summary = "Retrieve articles", description = "Retrieve all articles")
     @GetMapping
-    public List<Article> getAllArticles(@ParameterObject @PageableDefault Pageable pageable) {
+    public List<ArticleDto> getAllArticles(@ParameterObject @PageableDefault Pageable pageable) {
         return articleService.getAll(pageable);
     }
 
     @Operation(summary = "Retrieve an article", description = "Retrieve an article by id")
     @GetMapping("/{id}")
-    public Article getArticle(@PathVariable Long id) {
+    public ArticleDto getArticle(@PathVariable Long id) {
         return articleService.get(id);
     }
 
     @Operation(summary = "Update an article", description = "Update an article by id")
     @PutMapping("/{id}")
-    public Article updateArticle(@PathVariable Long id,
-                                 @RequestBody CreateArticleRequestDto requestDto) {
+    public ArticleDto updateArticle(@PathVariable Long id,
+                                    @RequestBody CreateArticleRequestDto requestDto) {
         return articleService.update(id, requestDto);
     }
 

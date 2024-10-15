@@ -16,6 +16,6 @@ public record CreateCourseRequestDto(
         @PositiveOrZero @NotNull BigDecimal price,
         @Positive @NotNull Long categoryId,
         @NotBlank String content,
-        String source
+        @NotBlank String source
 ) {
 }

@@ -1,7 +1,7 @@
 package mate.academy.skillshare.dto.user;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 import mate.academy.skillshare.dto.course.CourseDto;
 
 public record UserResponseDto(
@@ -10,6 +10,6 @@ public record UserResponseDto(
         String fullName,
         LocalDate birthDate,
         String phoneNumber,
-        List<CourseDto> favourites
+        Set<CourseDto> favourites
 ) {
 }

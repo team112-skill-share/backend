@@ -2,6 +2,7 @@ package mate.academy.skillshare.service.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import mate.academy.skillshare.dto.article.ArticleDto;
 import mate.academy.skillshare.dto.article.CreateArticleRequestDto;
 import mate.academy.skillshare.exception.EntityNotFoundException;
 import mate.academy.skillshare.mapper.ArticleMapper;
@@ -18,27 +19,28 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleMapper articleMapper;
 
     @Override
-    public Article create(CreateArticleRequestDto requestDto) {
-        return articleRepository.save(articleMapper.toModel(requestDto));
+    public ArticleDto create(CreateArticleRequestDto requestDto) {
+        Article article = articleMapper.toModel(requestDto);
+        return articleMapper.toDto(articleRepository.save(article));
     }
 
     @Override
-    public List<Article> getAll(Pageable pageable) {
-        return articleRepository.findAll(pageable).getContent();
+    public List<ArticleDto> getAll(Pageable pageable) {
+        return articleMapper.toDtoList(articleRepository.findAll(pageable).getContent());
     }
 
     @Override
-    public Article get(Long id) {
-        return articleRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("Can't find article by id: " + id));
+    public ArticleDto get(Long id) {
+        return articleMapper.toDto(articleRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Can't find article by id: " + id)));
     }
 
     @Override
-    public Article update(Long id, CreateArticleRequestDto requestDto) {
+    public ArticleDto update(Long id, CreateArticleRequestDto requestDto) {
         Article existingArticle = articleRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Can't find article by id: " + id));
         Article updatedArticle = articleMapper.updateFromRequest(requestDto, existingArticle);
-        return articleRepository.save(updatedArticle);
+        return articleMapper.toDto(articleRepository.save(updatedArticle));
     }
 
     @Override

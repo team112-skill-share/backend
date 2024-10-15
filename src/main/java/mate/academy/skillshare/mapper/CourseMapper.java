@@ -2,6 +2,7 @@ package mate.academy.skillshare.mapper;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import mate.academy.skillshare.config.MapperConfig;
 import mate.academy.skillshare.dto.course.CourseDto;
 import mate.academy.skillshare.dto.course.CreateCourseRequestDto;
@@ -18,6 +19,8 @@ public interface CourseMapper {
     Course toModel(CreateCourseRequestDto requestDto);
 
     List<CourseDto> toDtoList(Collection<Course> courses);
+
+    Set<CourseDto> toDtoSet(Collection<Course> courses);
 
     @Mapping(target = "id", ignore = true)
     Course updateFromRequest(CreateCourseRequestDto requestDto, @MappingTarget Course course);
