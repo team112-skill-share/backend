@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import mate.academy.skillshare.dto.course.CourseDto;
 import mate.academy.skillshare.dto.course.CourseSearchParameters;
 import mate.academy.skillshare.dto.course.CreateCourseRequestDto;
-import mate.academy.skillshare.service.CourseService;
+import mate.academy.skillshare.service.internal.CourseService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;

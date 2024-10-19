@@ -1,4 +1,4 @@
-package mate.academy.skillshare.service.impl;
+package mate.academy.skillshare.service.internal.impl;
 
 import java.util.Set;
 import java.util.UUID;
@@ -8,8 +8,10 @@ import mate.academy.skillshare.dto.user.UserEmailChangeRequestDto;
 import mate.academy.skillshare.dto.user.UserInfoRequestDto;
 import mate.academy.skillshare.dto.user.UserPasswordChangeRequestDto;
 import mate.academy.skillshare.dto.user.UserRegistrationRequestDto;
+import mate.academy.skillshare.dto.user.UserResetPasswordRequestDto;
 import mate.academy.skillshare.dto.user.UserResponseDto;
 import mate.academy.skillshare.exception.EntityNotFoundException;
+import mate.academy.skillshare.exception.InvalidTokenException;
 import mate.academy.skillshare.exception.RegistrationException;
 import mate.academy.skillshare.mapper.UserMapper;
 import mate.academy.skillshare.model.Course;
@@ -18,7 +20,8 @@ import mate.academy.skillshare.model.User;
 import mate.academy.skillshare.repository.course.CourseRepository;
 import mate.academy.skillshare.repository.role.RoleRepository;
 import mate.academy.skillshare.repository.user.UserRepository;
-import mate.academy.skillshare.service.UserService;
+import mate.academy.skillshare.security.internal.JwtUtil;
+import mate.academy.skillshare.service.internal.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +33,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final CourseRepository courseRepository;
+    private final JwtUtil jwtUtil;
 
     @Override
     public UserResponseDto register(UserRegistrationRequestDto requestDto)
@@ -114,6 +118,18 @@ public class UserServiceImpl implements UserService {
         user.setRoles(Set.of(role));
         user.setGoogleAccount(true);
         return userRepository.save(user);
+    }
+
+    @Override
+    public void resetPassword(UserResetPasswordRequestDto requestDto) {
+        if (!jwtUtil.isPasswordResetToken(requestDto.token())) {
+            throw new InvalidTokenException("Invalid or expired token.");
+        }
+        String email = jwtUtil.getUsername(requestDto.token());
+        User user = userRepository.findByEmail(email).orElseThrow(() ->
+                new EntityNotFoundException("Can't find user by this email"));
+        user.setPassword(passwordEncoder.encode(requestDto.newPassword()));
+        userRepository.save(user);
     }
 
     private String generateDummyPassword() {

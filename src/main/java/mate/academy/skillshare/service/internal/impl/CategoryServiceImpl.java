@@ -1,4 +1,4 @@
-package mate.academy.skillshare.service.impl;
+package mate.academy.skillshare.service.internal.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -6,7 +6,7 @@ import mate.academy.skillshare.dto.category.CreateCategoryRequestDto;
 import mate.academy.skillshare.mapper.CategoryMapper;
 import mate.academy.skillshare.model.Category;
 import mate.academy.skillshare.repository.category.CategoryRepository;
-import mate.academy.skillshare.service.CategoryService;
+import mate.academy.skillshare.service.internal.CategoryService;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,4 +1,4 @@
-package mate.academy.skillshare.service;
+package mate.academy.skillshare.service.internal;
 
 import java.util.List;
 import mate.academy.skillshare.dto.comment.CommentDto;

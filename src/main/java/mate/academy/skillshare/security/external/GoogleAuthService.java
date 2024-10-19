@@ -13,7 +13,7 @@ import mate.academy.skillshare.exception.AuthenticationException;
 import mate.academy.skillshare.model.User;
 import mate.academy.skillshare.repository.user.UserRepository;
 import mate.academy.skillshare.security.internal.JwtUtil;
-import mate.academy.skillshare.service.UserService;
+import mate.academy.skillshare.service.internal.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

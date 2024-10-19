@@ -7,7 +7,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.skillshare.dto.article.ArticleDto;
 import mate.academy.skillshare.dto.article.CreateArticleRequestDto;
-import mate.academy.skillshare.service.ArticleService;
+import mate.academy.skillshare.service.internal.ArticleService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;

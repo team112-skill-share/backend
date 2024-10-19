@@ -1,4 +1,4 @@
-package mate.academy.skillshare.service.impl;
+package mate.academy.skillshare.service.internal.impl;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,7 +14,7 @@ import mate.academy.skillshare.model.User;
 import mate.academy.skillshare.repository.course.CourseRepository;
 import mate.academy.skillshare.repository.review.ReviewRepository;
 import mate.academy.skillshare.repository.user.UserRepository;
-import mate.academy.skillshare.service.ReviewService;
+import mate.academy.skillshare.service.internal.ReviewService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 

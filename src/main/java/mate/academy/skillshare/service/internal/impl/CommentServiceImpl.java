@@ -1,4 +1,4 @@
-package mate.academy.skillshare.service.impl;
+package mate.academy.skillshare.service.internal.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import mate.academy.skillshare.model.User;
 import mate.academy.skillshare.repository.article.ArticleRepository;
 import mate.academy.skillshare.repository.comment.CommentRepository;
 import mate.academy.skillshare.repository.user.UserRepository;
-import mate.academy.skillshare.service.CommentService;
+import mate.academy.skillshare.service.internal.CommentService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 

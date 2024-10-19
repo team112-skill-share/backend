@@ -1,4 +1,4 @@
-package mate.academy.skillshare.service.impl;
+package mate.academy.skillshare.service.internal.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import mate.academy.skillshare.exception.EntityNotFoundException;
 import mate.academy.skillshare.mapper.ArticleMapper;
 import mate.academy.skillshare.model.Article;
 import mate.academy.skillshare.repository.article.ArticleRepository;
-import mate.academy.skillshare.service.ArticleService;
+import mate.academy.skillshare.service.internal.ArticleService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 

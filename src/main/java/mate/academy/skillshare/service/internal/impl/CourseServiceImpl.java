@@ -1,4 +1,4 @@
-package mate.academy.skillshare.service.impl;
+package mate.academy.skillshare.service.internal.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import mate.academy.skillshare.model.Course;
 import mate.academy.skillshare.repository.category.CategoryRepository;
 import mate.academy.skillshare.repository.course.CourseRepository;
 import mate.academy.skillshare.repository.course.CourseSpecificationBuilder;
-import mate.academy.skillshare.service.CourseService;
+import mate.academy.skillshare.service.internal.CourseService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
