@@ -89,6 +89,7 @@ public class ArticleControllerTest {
     @WithMockUser(username = "user")
     @DisplayName("Retrieve all articles")
     @Sql(scripts = {
+            "classpath:database/articles/delete-articles.sql",
             "classpath:database/articles/add-two-articles.sql",
             "classpath:database/subtitles/add-two-subtitles.sql"
     }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
