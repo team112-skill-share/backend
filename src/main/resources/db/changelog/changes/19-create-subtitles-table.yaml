@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-subtitles-table
+      author: oleksandr
+      changes:
+        - createTable:
+            tableName: subtitles
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: subtitle
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: article_id
+                  type: bigint
+        - addForeignKeyConstraint:
+            baseTableName: subtitles
+            baseColumnNames: article_id
+            constraintName: fk_subtitles_articles
+            referencedTableName: articles
+            referencedColumnNames: id
+            onDelete: CASCADE

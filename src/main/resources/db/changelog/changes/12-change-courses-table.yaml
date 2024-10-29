@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: change-courses-table
+      author: oleksandr
+      changes:
+        - dropColumn:
+            tableName: courses
+            columnName: content
+        - dropColumn:
+            tableName: courses
+            columnName: is_deleted
+        - addNotNullConstraint:
+            tableName: courses
+            columnName: source
+            constraintName: source_not_null
+            columnDataType: varchar(255)

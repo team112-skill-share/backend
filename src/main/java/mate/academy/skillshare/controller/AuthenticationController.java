@@ -18,6 +18,7 @@ import mate.academy.skillshare.service.external.NotifierService;
 import mate.academy.skillshare.service.internal.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,7 +46,7 @@ public class AuthenticationController {
 
     @Operation(summary = "Log in", description = "Log into existing account")
     @PostMapping("/login")
-    public UserLoginResponseDto login(@RequestBody UserLoginRequestDto requestDto) {
+    public UserLoginResponseDto login(@RequestBody @Valid UserLoginRequestDto requestDto) {
         return authenticationService.authenticate(requestDto);
     }
 
@@ -56,7 +57,7 @@ public class AuthenticationController {
     }
 
     @Operation(summary = "Google OAuth callback", description = "Handle Google OAuth callback")
-    @PostMapping("/google/callback")
+    @GetMapping("/google/callback")
     public ResponseEntity<?> handleGoogleCallback(@RequestParam("code") String authorizationCode) {
         return googleAuthService.handleGoogleLoginCallback(authorizationCode);
     }
@@ -65,7 +66,7 @@ public class AuthenticationController {
             description = "Receive a link to reset a password if you forgot it")
     @PostMapping("/forgotPassword")
     public ResponseEntity<String> forgotPassword(
-            @RequestBody UserForgotPasswordRequestDto requestDto) {
+            @RequestBody @Valid UserForgotPasswordRequestDto requestDto) {
         notifierService.sendResetPasswordLink(requestDto);
         return ResponseEntity.ok("Password reset link sent to email.");
     }

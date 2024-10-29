@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
-    @EntityGraph(attributePaths = "comments.user.roles")
+    @EntityGraph(attributePaths = {"comments.user.roles", "subtitles", "contents", "images"})
     Optional<Article> findById(Long id);
 
-    @EntityGraph(attributePaths = "comments.user.roles")
+    @EntityGraph(attributePaths = {"comments.user.roles", "subtitles", "contents", "images"})
     Page<Article> findAll(Pageable pageable);
 }

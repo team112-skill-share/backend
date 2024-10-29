@@ -1,9 +1,7 @@
 package mate.academy.skillshare.dto.course;
 
-import mate.academy.skillshare.model.Category;
-
 public record CourseSearchParameters(
-        Category category,
+        Long categoryId,
         String author,
         String orderBy
 ) {

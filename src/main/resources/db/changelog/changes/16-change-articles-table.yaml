@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: change-articles-table
+      author: oleksandr
+      changes:
+        - dropColumn:
+            tableName: articles
+            columnName: content
+        - addColumn:
+            tableName: articles
+            columns:
+              - column:
+                  name: description
+                  type: text
+                  constraints:
+                    nullable: false

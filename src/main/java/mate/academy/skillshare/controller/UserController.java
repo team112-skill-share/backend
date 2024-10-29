@@ -94,7 +94,7 @@ public class UserController {
     @Operation(summary = "Reset forgotten password", description = "Reset forgotten password")
     @PostMapping("/me/resetPassword")
     public ResponseEntity<String> resetPassword(
-            @RequestBody UserResetPasswordRequestDto requestDto) {
+            @RequestBody @Valid UserResetPasswordRequestDto requestDto) {
         try {
             userService.resetPassword(requestDto);
             return ResponseEntity.ok("Password successfully updated.");

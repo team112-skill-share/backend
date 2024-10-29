@@ -23,4 +23,5 @@ jobs:
           SPRING_MAIL_USERNAME: ${{ secrets.SPRING_MAIL_USERNAME }}
           SPRING_MAIL_PASSWORD: ${{ secrets.SPRING_MAIL_PASSWORD }}
           JWT_PASSWORD_RESET_EXPIRATION: ${{ secrets.JWT_PASSWORD_RESET_EXPIRATION }}
+          COURSE_EMAIL: ${{ secrets.COURSE_EMAIL }}
         run: mvn --batch-mode --update-snapshots verify

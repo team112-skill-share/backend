@@ -17,6 +17,7 @@ public class GlobalSetupExtension implements BeforeAllCallback {
                     dotenv.get("JWT_PASSWORD_RESET_EXPIRATION"));
             System.setProperty("GOOGLE_CLIENT_ID", dotenv.get("GOOGLE_CLIENT_ID"));
             System.setProperty("GOOGLE_CLIENT_SECRET", dotenv.get("GOOGLE_CLIENT_SECRET"));
+            System.setProperty("COURSE_EMAIL", dotenv.get("COURSE_EMAIL"));
         } else {
             System.setProperty("SPRING_MAIL_USERNAME", System.getenv("SPRING_MAIL_USERNAME"));
             System.setProperty("SPRING_MAIL_PASSWORD", System.getenv("SPRING_MAIL_PASSWORD"));
@@ -26,6 +27,7 @@ public class GlobalSetupExtension implements BeforeAllCallback {
                     System.getenv("JWT_PASSWORD_RESET_EXPIRATION"));
             System.setProperty("GOOGLE_CLIENT_ID", System.getenv("GOOGLE_CLIENT_ID"));
             System.setProperty("GOOGLE_CLIENT_SECRET", System.getenv("GOOGLE_CLIENT_SECRET"));
+            System.setProperty("COURSE_EMAIL", System.getenv("COURSE_EMAIL"));
         }
     }
 }

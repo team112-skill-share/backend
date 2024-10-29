@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-contents-table
+      author: oleksandr
+      changes:
+        - createTable:
+            tableName: contents
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: text
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: course_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: contents
+            baseColumnNames: course_id
+            constraintName: fk_contents_courses
+            referencedTableName: courses
+            referencedColumnNames: id
+            onDelete: CASCADE

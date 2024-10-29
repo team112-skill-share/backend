@@ -17,6 +17,7 @@ public class SkillShareApplication {
                 dotenv.get("JWT_PASSWORD_RESET_EXPIRATION"));
         System.setProperty("GOOGLE_CLIENT_ID", dotenv.get("GOOGLE_CLIENT_ID"));
         System.setProperty("GOOGLE_CLIENT_SECRET", dotenv.get("GOOGLE_CLIENT_SECRET"));
+        System.setProperty("COURSE_EMAIL", dotenv.get("COURSE_EMAIL"));
         SpringApplication.run(SkillShareApplication.class, args);
     }
 }

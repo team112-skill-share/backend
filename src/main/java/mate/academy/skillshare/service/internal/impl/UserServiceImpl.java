@@ -1,5 +1,6 @@
 package mate.academy.skillshare.service.internal.impl;
 
+import jakarta.persistence.EntityExistsException;
 import java.util.Set;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import mate.academy.skillshare.dto.user.UserRegistrationRequestDto;
 import mate.academy.skillshare.dto.user.UserResetPasswordRequestDto;
 import mate.academy.skillshare.dto.user.UserResponseDto;
 import mate.academy.skillshare.exception.EntityNotFoundException;
+import mate.academy.skillshare.exception.InvalidDataException;
 import mate.academy.skillshare.exception.InvalidTokenException;
 import mate.academy.skillshare.exception.RegistrationException;
 import mate.academy.skillshare.mapper.UserMapper;
@@ -68,7 +70,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Can't find user by id: " + id));
         if (!passwordEncoder.matches(requestDto.currentPassword(), user.getPassword())) {
-            throw new RuntimeException("Current password is incorrect");
+            throw new InvalidDataException("Current password is incorrect");
         }
         user.setPassword(passwordEncoder.encode(requestDto.newPassword()));
         return userMapper.toDto(userRepository.save(user));
@@ -84,7 +86,7 @@ public class UserServiceImpl implements UserService {
             return userMapper.toDto(user);
         }
         if (userRepository.findByEmail(newEmail).isPresent()) {
-            throw new RuntimeException("User with this email already exists");
+            throw new InvalidDataException("User with this email already exists");
         }
         user.setEmail(newEmail);
         return userMapper.toDto(userRepository.save(user));
@@ -96,8 +98,14 @@ public class UserServiceImpl implements UserService {
                 new EntityNotFoundException("Can't find user by id: " + userId));
         Course course = courseRepository.findById(courseId).orElseThrow(() ->
                 new EntityNotFoundException("Can't find course by id: " + courseId));
-        user.getFavourites().add(course);
-        return userMapper.toDto(userRepository.save(user));
+        Set<Course> courses = user.getFavourites();
+        if (!courses.contains(course)) {
+            courses.add(course);
+            return userMapper.toDto(userRepository.save(user));
+        } else {
+            throw new EntityExistsException(
+                    "Course " + course.getTitle() + " is already added into favourites");
+        }
     }
 
     @Override
