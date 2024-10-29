@@ -10,13 +10,11 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapperConfig.class)
 public interface ReviewMapper {
-    @Mapping(target = "courseId", source = "course.id")
     @Mapping(target = "userId", source = "user.id")
     ReviewDto toDto(Review review);
 
     Review toModel(CreateReviewRequestDto requestDto);
 
-    @Mapping(target = "courseId", source = "course.id")
     @Mapping(target = "userId", source = "user.id")
     List<ReviewDto> toDtoList(List<Review> reviews);
 }

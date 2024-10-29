@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: recreate-source-column-in-courses-table
+      author: oleksandr
+      changes:
+        - dropColumn:
+            tableName: courses
+            columnName: source
+        - addColumn:
+            tableName: courses
+            columns:
+              - column:
+                  name: source
+                  type: varchar(255)

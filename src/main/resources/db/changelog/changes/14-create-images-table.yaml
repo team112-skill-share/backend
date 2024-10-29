@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-images-table
+      author: oleksandr
+      changes:
+        - createTable:
+            tableName: images
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: url
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: course_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: images
+            baseColumnNames: course_id
+            constraintName: fk_images_courses
+            referencedTableName: courses
+            referencedColumnNames: id
+            onDelete: CASCADE

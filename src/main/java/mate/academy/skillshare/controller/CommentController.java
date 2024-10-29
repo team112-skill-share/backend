@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import mate.academy.skillshare.dto.comment.CommentDto;
 import mate.academy.skillshare.dto.comment.CreateCommentRequestDto;
 import mate.academy.skillshare.model.User;
-import mate.academy.skillshare.service.CommentService;
+import mate.academy.skillshare.service.internal.CommentService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;

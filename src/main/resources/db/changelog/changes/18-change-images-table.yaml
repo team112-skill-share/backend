@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: change-images-table
+      author: oleksandr
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: images
+            constraintName: fk_images_courses
+        - dropColumn:
+            tableName: images
+            columnName: course_id
+        - addColumn:
+            tableName: images
+            columns:
+              - column:
+                  name: course_id
+                  type: bigint
+        - addColumn:
+            tableName: images
+            columns:
+              - column:
+                  name: article_id
+                  type: bigint
+        - addForeignKeyConstraint:
+            baseTableName: images
+            baseColumnNames: course_id
+            constraintName: fk_images_courses
+            referencedTableName: courses
+            referencedColumnNames: id
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: images
+            baseColumnNames: article_id
+            constraintName: fk_images_articles
+            referencedTableName: articles
+            referencedColumnNames: id
+            onDelete: CASCADE

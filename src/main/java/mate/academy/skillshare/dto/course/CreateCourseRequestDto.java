@@ -5,7 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
+import java.util.List;
+import mate.academy.skillshare.dto.content.CreateContentRequestDto;
 import mate.academy.skillshare.model.Course;
+import org.springframework.web.multipart.MultipartFile;
 
 public record CreateCourseRequestDto(
         @NotBlank String author,
@@ -15,7 +18,8 @@ public record CreateCourseRequestDto(
         @NotNull boolean certificate,
         @PositiveOrZero @NotNull BigDecimal price,
         @Positive @NotNull Long categoryId,
-        @NotBlank String content,
-        @NotBlank String source
+        String source,
+        List<CreateContentRequestDto> contents,
+        List<MultipartFile> images
 ) {
 }

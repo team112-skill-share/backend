@@ -7,9 +7,13 @@ import lombok.RequiredArgsConstructor;
 import mate.academy.skillshare.dto.user.UserEmailChangeRequestDto;
 import mate.academy.skillshare.dto.user.UserInfoRequestDto;
 import mate.academy.skillshare.dto.user.UserPasswordChangeRequestDto;
+import mate.academy.skillshare.dto.user.UserResetPasswordRequestDto;
 import mate.academy.skillshare.dto.user.UserResponseDto;
+import mate.academy.skillshare.exception.InvalidTokenException;
 import mate.academy.skillshare.model.User;
-import mate.academy.skillshare.service.UserService;
+import mate.academy.skillshare.service.internal.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -85,5 +89,20 @@ public class UserController {
     ) {
         User user = (User) authentication.getPrincipal();
         return userService.removeFavouriteCourse(user.getId(), courseId);
+    }
+
+    @Operation(summary = "Reset forgotten password", description = "Reset forgotten password")
+    @PostMapping("/me/resetPassword")
+    public ResponseEntity<String> resetPassword(
+            @RequestBody @Valid UserResetPasswordRequestDto requestDto) {
+        try {
+            userService.resetPassword(requestDto);
+            return ResponseEntity.ok("Password successfully updated.");
+        } catch (InvalidTokenException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error resetting password.");
+        }
     }
 }

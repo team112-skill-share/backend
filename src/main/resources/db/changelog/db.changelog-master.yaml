@@ -21,3 +21,19 @@ databaseChangeLog:
       file: db/changelog/changes/10-create-users-courses-table.yaml
   - include:
       file: db/changelog/changes/11-add-is-google-account-to-user.yaml
+  - include:
+      file: db/changelog/changes/12-change-courses-table.yaml
+  - include:
+      file: db/changelog/changes/13-create-contents-table.yaml
+  - include:
+      file: db/changelog/changes/14-create-images-table.yaml
+  - include:
+      file: db/changelog/changes/15-recreate-source-column-in-courses-table.yaml
+  - include:
+      file: db/changelog/changes/16-change-articles-table.yaml
+  - include:
+      file: db/changelog/changes/17-change-contents-table.yaml
+  - include:
+      file: db/changelog/changes/18-change-images-table.yaml
+  - include:
+      file: db/changelog/changes/19-create-subtitles-table.yaml

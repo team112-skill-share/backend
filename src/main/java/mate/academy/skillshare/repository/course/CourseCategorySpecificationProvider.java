@@ -17,6 +17,6 @@ public class CourseCategorySpecificationProvider implements SpecificationProvide
     @Override
     public Specification<Course> getSpecification(Long categoryId) {
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get(CATEGORY).get("id"), categoryId);
+                criteriaBuilder.equal(root.join(CATEGORY).get("id"), categoryId);
     }
 }

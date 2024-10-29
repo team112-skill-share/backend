@@ -10,13 +10,11 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapperConfig.class)
 public interface CommentMapper {
-    @Mapping(target = "articleId", source = "article.id")
     @Mapping(target = "userId", source = "user.id")
     CommentDto toDto(Comment comment);
 
     Comment toModel(CreateCommentRequestDto requestDto);
 
-    @Mapping(target = "articleId", source = "article.id")
     @Mapping(target = "userId", source = "user.id")
     List<CommentDto> toDtoList(List<Comment> comments);
 }

@@ -5,9 +5,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import mate.academy.skillshare.dto.article.ArticleCardDto;
 import mate.academy.skillshare.dto.article.ArticleDto;
 import mate.academy.skillshare.dto.article.CreateArticleRequestDto;
-import mate.academy.skillshare.service.ArticleService;
+import mate.academy.skillshare.service.internal.ArticleService;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -38,7 +39,8 @@ public class ArticleController {
 
     @Operation(summary = "Retrieve articles", description = "Retrieve all articles")
     @GetMapping
-    public List<ArticleDto> getAllArticles(@ParameterObject @PageableDefault Pageable pageable) {
+    public List<ArticleCardDto> getAllArticles(
+            @ParameterObject @PageableDefault Pageable pageable) {
         return articleService.getAll(pageable);
     }
 
@@ -51,7 +53,7 @@ public class ArticleController {
     @Operation(summary = "Update an article", description = "Update an article by id")
     @PutMapping("/{id}")
     public ArticleDto updateArticle(@PathVariable Long id,
-                                    @RequestBody CreateArticleRequestDto requestDto) {
+                                    @RequestBody @Valid CreateArticleRequestDto requestDto) {
         return articleService.update(id, requestDto);
     }
 

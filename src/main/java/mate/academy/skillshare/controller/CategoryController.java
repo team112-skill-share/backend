@@ -7,7 +7,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.skillshare.dto.category.CreateCategoryRequestDto;
 import mate.academy.skillshare.model.Category;
-import mate.academy.skillshare.service.CategoryService;
+import mate.academy.skillshare.service.internal.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

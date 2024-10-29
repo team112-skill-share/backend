@@ -16,17 +16,15 @@ import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Getter
 @Setter
-@SQLDelete(sql = "UPDATE courses SET is_deleted = TRUE WHERE id = ?")
-@SQLRestriction("is_deleted = FALSE")
 @Table(name = "courses")
 public class Course {
     @Id
@@ -48,15 +46,14 @@ public class Course {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
-    @Column(nullable = false)
-    private String content;
-    @Column(nullable = false)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Content> contents = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Image> images = new LinkedHashSet<>();
     private String source;
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("timestamp DESC")
     private List<Review> reviews = new ArrayList<>();
-    @Column(nullable = false)
-    private boolean isDeleted;
 
     public enum Format {
         GROUP,

@@ -17,9 +17,9 @@ public class CourseSpecificationBuilder
     @Override
     public Specification<Course> build(CourseSearchParameters searchParameters) {
         Specification<Course> spec = Specification.where(null);
-        if (searchParameters.category() != null) {
+        if (searchParameters.categoryId() != null) {
             spec = spec.and(courseSpecificationProviderManager.getSpecificationProvider("category")
-                    .getSpecification(searchParameters.category().getId()));
+                    .getSpecification(searchParameters.categoryId()));
         }
         if (searchParameters.author() != null && !searchParameters.author().isEmpty()) {
             spec = spec.and(courseSpecificationProviderManager.getSpecificationProvider("author")

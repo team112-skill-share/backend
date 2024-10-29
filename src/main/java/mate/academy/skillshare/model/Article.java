@@ -10,7 +10,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,7 +29,13 @@ public class Article {
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
-    private String content;
+    private String description;
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Subtitle> subtitles = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Content> contents = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Image> images = new LinkedHashSet<>();
     private String source;
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("timestamp DESC")

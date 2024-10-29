@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
+import mate.academy.skillshare.dto.user.UserForgotPasswordRequestDto;
 import mate.academy.skillshare.dto.user.UserLoginRequestDto;
 import mate.academy.skillshare.dto.user.UserLoginResponseDto;
 import mate.academy.skillshare.dto.user.UserRegistrationRequestDto;
@@ -13,7 +14,8 @@ import mate.academy.skillshare.dto.user.UserResponseDto;
 import mate.academy.skillshare.exception.RegistrationException;
 import mate.academy.skillshare.security.external.GoogleAuthService;
 import mate.academy.skillshare.security.internal.AuthenticationService;
-import mate.academy.skillshare.service.UserService;
+import mate.academy.skillshare.service.external.NotifierService;
+import mate.academy.skillshare.service.internal.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +34,7 @@ public class AuthenticationController {
     private final UserService userService;
     private final AuthenticationService authenticationService;
     private final GoogleAuthService googleAuthService;
+    private final NotifierService notifierService;
 
     @Operation(summary = "Register new user", description = "Register new user")
     @ResponseStatus(HttpStatus.CREATED)
@@ -43,12 +46,12 @@ public class AuthenticationController {
 
     @Operation(summary = "Log in", description = "Log into existing account")
     @PostMapping("/login")
-    public UserLoginResponseDto login(@RequestBody UserLoginRequestDto requestDto) {
+    public UserLoginResponseDto login(@RequestBody @Valid UserLoginRequestDto requestDto) {
         return authenticationService.authenticate(requestDto);
     }
 
     @Operation(summary = "Google login", description = "Redirect to Google OAuth for login")
-    @GetMapping("/login/google")
+    @PostMapping("/login/google")
     public void redirectToGoogle(HttpServletResponse response) throws IOException {
         googleAuthService.initiateGoogleLogin(response);
     }
@@ -57,5 +60,14 @@ public class AuthenticationController {
     @GetMapping("/google/callback")
     public ResponseEntity<?> handleGoogleCallback(@RequestParam("code") String authorizationCode) {
         return googleAuthService.handleGoogleLoginCallback(authorizationCode);
+    }
+
+    @Operation(summary = "Forgot password",
+            description = "Receive a link to reset a password if you forgot it")
+    @PostMapping("/forgotPassword")
+    public ResponseEntity<String> forgotPassword(
+            @RequestBody @Valid UserForgotPasswordRequestDto requestDto) {
+        notifierService.sendResetPasswordLink(requestDto);
+        return ResponseEntity.ok("Password reset link sent to email.");
     }
 }
