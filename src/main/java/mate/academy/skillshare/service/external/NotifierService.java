@@ -1,5 +1,6 @@
 package mate.academy.skillshare.service.external;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.skillshare.dto.course.CreateCourseForm;
 import mate.academy.skillshare.dto.user.UserForgotPasswordRequestDto;
@@ -13,10 +14,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class NotifierService {
     private static final String passwordResetLink
-            = "https://skill-share-112.netlify.app/reset-password?token="; //placeholder!
+            = "https://skill-share-112.netlify.app/reset-password?token=";
     private final EmailService emailService;
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
+    private final List<String> additionalNewCourseEmails = List.of("nazzarin565@gmail.com");
     @Value("${course.email}")
     private String newCourseEmail;
 
@@ -46,5 +48,8 @@ public class NotifierService {
                     .append(requestDto.description());
         }
         emailService.sendEmail(newCourseEmail, "New course request", message.toString());
+        additionalNewCourseEmails.forEach(
+                email -> emailService.sendEmail(
+                        email, "New course request", message.toString()));
     }
 }

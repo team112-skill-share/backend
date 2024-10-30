@@ -2,13 +2,13 @@ package mate.academy.skillshare.security.external;
 
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import mate.academy.skillshare.dto.user.GoogleUserDto;
-import mate.academy.skillshare.dto.user.UserLoginResponseDto;
 import mate.academy.skillshare.exception.AuthenticationException;
 import mate.academy.skillshare.model.User;
 import mate.academy.skillshare.repository.user.UserRepository;
@@ -31,20 +31,21 @@ import org.springframework.web.client.RestTemplate;
 public class GoogleAuthService {
     private static final String TOKEN_URL = "https://oauth2.googleapis.com/token";
     private static final String USER_INFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
-    private static final String REDIRECT_URI = "http://localhost:8080/api/auth/google/callback";
-    @Value("${spring.security.oauth2.client.registration.google.client-id}")
-    private static String CLIENT_ID;
-    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
-    private static String CLIENT_SECRET;
+    private static final String REDIRECT_URI = "https://skillshare112.online/api/auth/google/callback";
+    private static final String REDIRECT_TO_FRONTEND_URL = "https://skill-share-112.netlify.app?token=";
     private final JwtUtil jwtTokenProvider;
     private final UserRepository userRepository;
     private final UserService userService;
     private final RestTemplate restTemplate;
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
+    private String clientId;
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
+    private String clientSecret;
 
     public void initiateGoogleLogin(HttpServletResponse response) throws IOException {
         String googleAuthUrl = new StringBuilder("https://accounts.google.com/o/oauth2/v2/auth")
                 .append("?client_id=")
-                .append(URLEncoder.encode(CLIENT_ID, StandardCharsets.UTF_8))
+                .append(URLEncoder.encode(clientId, StandardCharsets.UTF_8))
                 .append("&redirect_uri=")
                 .append(URLEncoder.encode(REDIRECT_URI, StandardCharsets.UTF_8))
                 .append("&response_type=code")
@@ -58,10 +59,12 @@ public class GoogleAuthService {
             String accessToken = exchangeAuthorizationCodeForAccessToken(authorizationCode);
             GoogleUserDto googleUser = fetchGoogleUserInfo(accessToken);
             Optional<User> existingUser = userRepository.findByEmail(googleUser.email());
-            User user;
-            user = existingUser.orElseGet(() -> userService.registerGoogleUser(googleUser));
+            User user = existingUser.orElseGet(() -> userService.registerGoogleUser(googleUser));
             String jwtToken = jwtTokenProvider.generateToken(user.getUsername());
-            return ResponseEntity.ok(new UserLoginResponseDto(jwtToken));
+            String redirectUrl = REDIRECT_TO_FRONTEND_URL + jwtToken;
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(URI.create(redirectUrl));
+            return new ResponseEntity<>(headers, HttpStatus.FOUND);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("Google authentication failed");
@@ -73,8 +76,8 @@ public class GoogleAuthService {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("code", authorizationCode);
-        body.add("client_id", CLIENT_ID);
-        body.add("client_secret", CLIENT_SECRET);
+        body.add("client_id", clientId);
+        body.add("client_secret", clientSecret);
         body.add("redirect_uri", REDIRECT_URI);
         body.add("grant_type", "authorization_code");
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
