@@ -38,7 +38,7 @@ public class CategoryController {
         return categoryService.getAll();
     }
 
-    @Operation(summary = "Delete category", description = "Delete the task")
+    @Operation(summary = "Delete category", description = "Delete a category by id")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteCategory(@PathVariable Long id) {

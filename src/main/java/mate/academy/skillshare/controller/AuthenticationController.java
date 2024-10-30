@@ -51,7 +51,7 @@ public class AuthenticationController {
     }
 
     @Operation(summary = "Google login", description = "Redirect to Google OAuth for login")
-    @PostMapping("/login/google")
+    @GetMapping("/login/google")
     public void redirectToGoogle(HttpServletResponse response) throws IOException {
         googleAuthService.initiateGoogleLogin(response);
     }
@@ -63,7 +63,7 @@ public class AuthenticationController {
     }
 
     @Operation(summary = "Forgot password",
-            description = "Receive a link to reset a password if you forgot it")
+            description = "Request a link to reset a password if you forgot it")
     @PostMapping("/forgotPassword")
     public ResponseEntity<String> forgotPassword(
             @RequestBody @Valid UserForgotPasswordRequestDto requestDto) {
