@@ -1,6 +1,5 @@
 package mate.academy.skillshare.service.internal.impl;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -16,9 +15,9 @@ import mate.academy.skillshare.model.Content;
 import mate.academy.skillshare.model.Image;
 import mate.academy.skillshare.model.Subtitle;
 import mate.academy.skillshare.repository.article.ArticleRepository;
-import mate.academy.skillshare.service.external.ImageService;
 import mate.academy.skillshare.service.internal.ArticleService;
 import mate.academy.skillshare.service.internal.ContentService;
+import mate.academy.skillshare.service.internal.ImageService;
 import mate.academy.skillshare.service.internal.SubtitleService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -64,9 +63,6 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void delete(Long id) {
-        Article article = articleRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("Can't find article by id: " + id));
-        article.getImages().forEach(image -> imageService.delete(image.getId()));
         articleRepository.deleteById(id);
     }
 
@@ -92,13 +88,8 @@ public class ArticleServiceImpl implements ArticleService {
         return requestDto.images() != null
                 ? requestDto.images()
                         .stream()
-                        .map(image -> {
-                            try {
-                                return imageService.createForArticle(article, image);
-                            } catch (IOException e) {
-                                throw new RuntimeException("Can't upload image", e);
-                            }
-                        }).collect(Collectors.toSet())
+                        .map(image -> imageService.createForArticle(article, image))
+                        .collect(Collectors.toSet())
                 : Collections.emptySet();
     }
 }

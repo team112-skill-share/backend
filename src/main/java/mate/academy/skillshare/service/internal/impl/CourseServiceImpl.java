@@ -1,6 +1,5 @@
 package mate.academy.skillshare.service.internal.impl;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -19,9 +18,9 @@ import mate.academy.skillshare.model.Image;
 import mate.academy.skillshare.repository.category.CategoryRepository;
 import mate.academy.skillshare.repository.course.CourseRepository;
 import mate.academy.skillshare.repository.course.CourseSpecificationBuilder;
-import mate.academy.skillshare.service.external.ImageService;
 import mate.academy.skillshare.service.internal.ContentService;
 import mate.academy.skillshare.service.internal.CourseService;
+import mate.academy.skillshare.service.internal.ImageService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -96,23 +95,18 @@ public class CourseServiceImpl implements CourseService {
     private Set<Content> processContents(CreateCourseRequestDto requestDto, Course course) {
         return requestDto.contents() != null
                 ? requestDto.contents()
-                        .stream()
-                        .map(content -> contentService.createForCourse(course, content))
-                        .collect(Collectors.toSet())
+                .stream()
+                .map(content -> contentService.createForCourse(course, content))
+                .collect(Collectors.toSet())
                 : Collections.emptySet();
     }
 
     private Set<Image> processImages(CreateCourseRequestDto requestDto, Course course) {
         return requestDto.images() != null
                 ? requestDto.images()
-                        .stream()
-                        .map(image -> {
-                            try {
-                                return imageService.createForCourse(course, image);
-                            } catch (IOException e) {
-                                throw new RuntimeException("Can't upload image", e);
-                            }
-                        }).collect(Collectors.toSet())
+                .stream()
+                .map(image -> imageService.createForCourse(course, image))
+                .collect(Collectors.toSet())
                 : Collections.emptySet();
     }
 }

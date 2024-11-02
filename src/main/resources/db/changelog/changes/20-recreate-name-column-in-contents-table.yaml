@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: recreate-name-column-in-contents-table
+      author: oleksandr
+      changes:
+        - dropColumn:
+            tableName: contents
+            columnName: name
+        - addColumn:
+            tableName: contents
+            columns:
+              - column:
+                  name: name
+                  type: varchar(255)

@@ -37,3 +37,5 @@ databaseChangeLog:
       file: db/changelog/changes/18-change-images-table.yaml
   - include:
       file: db/changelog/changes/19-create-subtitles-table.yaml
+  - include:
+      file: db/changelog/changes/20-recreate-name-column-in-contents-table.yaml

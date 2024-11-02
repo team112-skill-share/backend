@@ -7,8 +7,8 @@ import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.util.List;
 import mate.academy.skillshare.dto.content.CreateContentRequestDto;
+import mate.academy.skillshare.dto.image.CreateImageRequestDto;
 import mate.academy.skillshare.model.Course;
-import org.springframework.web.multipart.MultipartFile;
 
 public record CreateCourseRequestDto(
         @NotBlank String author,
@@ -20,6 +20,6 @@ public record CreateCourseRequestDto(
         @Positive @NotNull Long categoryId,
         String source,
         List<CreateContentRequestDto> contents,
-        List<MultipartFile> images
+        List<CreateImageRequestDto> images
 ) {
 }

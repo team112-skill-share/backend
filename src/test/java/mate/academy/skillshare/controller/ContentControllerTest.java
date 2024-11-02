@@ -59,7 +59,7 @@ public class ContentControllerTest {
             "classpath:database/categories/delete-categories.sql"
     }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
     )
-    public void updateUserEmail_GivenValidRequestDto_ShouldReturnUserResponseDto()
+    public void updateContent_GivenValidRequestDto_ShouldReturnContentDto()
             throws Exception {
         //Given
         Content content = createTestContent();
