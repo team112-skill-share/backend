@@ -1,0 +1,123 @@
+databaseChangeLog:
+  - changeSet:
+      id: recreate-courses-table
+      author: oleksandr
+      changes:
+        - sql:
+            splitStatements: false
+            sql: |
+              DELETE FROM contents 
+              WHERE course_id IS NOT NULL;
+        - sql:
+            splitStatements: false
+            sql: |
+              DELETE FROM images 
+              WHERE course_id IS NOT NULL;
+        - dropForeignKeyConstraint:
+            baseTableName: reviews
+            constraintName: fk_reviews_courses
+        - dropForeignKeyConstraint:
+            baseTableName: users_courses
+            constraintName: fk_users_courses_course
+        - dropForeignKeyConstraint:
+            baseTableName: contents
+            constraintName: fk_contents_courses
+        - dropForeignKeyConstraint:
+            baseTableName: images
+            constraintName: fk_images_courses
+        - dropTable:
+            tableName: courses
+        - createTable:
+            tableName: courses
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: author
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: card_image
+                  type: varchar(255)
+              - column:
+                  name: duration
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: format
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: certificate
+                  type: BIT(1)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: trial
+                  type: BIT(1)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: decimal(10, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: source
+                  type: varchar(255)
+        - addForeignKeyConstraint:
+            baseTableName: courses
+            baseColumnNames: category_id
+            constraintName: fk_courses_categories
+            referencedTableName: categories
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: reviews
+            baseColumnNames: course_id
+            constraintName: fk_reviews_courses
+            referencedTableName: courses
+            referencedColumnNames: id
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: users_courses
+            baseColumnNames: course_id
+            constraintName: fk_users_courses_course
+            referencedTableName: courses
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: contents
+            baseColumnNames: course_id
+            constraintName: fk_contents_courses
+            referencedTableName: courses
+            referencedColumnNames: id
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: images
+            baseColumnNames: course_id
+            constraintName: fk_images_courses
+            referencedTableName: courses
+            referencedColumnNames: id
+            onDelete: CASCADE
