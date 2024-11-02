@@ -28,6 +28,7 @@ public class Article {
     private String author;
     @Column(nullable = false)
     private String title;
+    private String cardImage;
     @Column(nullable = false)
     private String description;
     @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE, orphanRemoval = true)

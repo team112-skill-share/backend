@@ -39,3 +39,7 @@ databaseChangeLog:
       file: db/changelog/changes/19-create-subtitles-table.yaml
   - include:
       file: db/changelog/changes/20-recreate-name-column-in-contents-table.yaml
+  - include:
+      file: db/changelog/changes/21-add-columns-to-courses-table.yaml
+  - include:
+      file: db/changelog/changes/22-add-card-image-column-to-articles.yaml

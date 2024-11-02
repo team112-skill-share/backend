@@ -34,13 +34,19 @@ public class Course {
     private String author;
     @Column(nullable = false)
     private String title;
+    private String cardImage;
     @Column(nullable = false)
     private String duration;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private CourseType type;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Format format;
     @Column(nullable = false)
     private boolean certificate;
+    @Column(nullable = false)
+    private boolean trial;
     @Column(nullable = false)
     private BigDecimal price;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -54,6 +60,11 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("timestamp DESC")
     private List<Review> reviews = new ArrayList<>();
+
+    public enum CourseType {
+        ONLINE,
+        OFFLINE
+    }
 
     public enum Format {
         GROUP,

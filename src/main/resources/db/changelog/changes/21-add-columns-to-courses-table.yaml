@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-columns-to-courses-table
+      author: oleksandr
+      changes:
+        - addColumn:
+            tableName: courses
+            columns:
+              - column:
+                  name: card_image
+                  type: varchar(255)
+        - addColumn:
+            tableName: courses
+            columns:
+              - column:
+                  name: type
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+        - addColumn:
+            tableName: courses
+            columns:
+              - column:
+                  name: trial
+                  type: BIT(1)
+                  constraints:
+                    nullable: false

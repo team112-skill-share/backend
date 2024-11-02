@@ -13,9 +13,12 @@ import mate.academy.skillshare.model.Course;
 public record CreateCourseRequestDto(
         @NotBlank String author,
         @NotBlank String title,
+        String cardImage,
         @NotBlank String duration,
+        @NotNull Course.CourseType type,
         @NotNull Course.Format format,
         @NotNull boolean certificate,
+        @NotNull boolean trial,
         @PositiveOrZero @NotNull BigDecimal price,
         @Positive @NotNull Long categoryId,
         String source,

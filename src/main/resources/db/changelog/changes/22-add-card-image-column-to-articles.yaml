@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-card-image-column-to-articles
+      author: oleksandr
+      changes:
+        - addColumn:
+            tableName: articles
+            columns:
+              - column:
+                  name: card_image
+                  type: varchar(255)

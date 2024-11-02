@@ -9,6 +9,7 @@ import mate.academy.skillshare.dto.subtitle.CreateSubtitleRequestDto;
 public record CreateArticleRequestDto(
         @NotBlank String author,
         @NotBlank String title,
+        String cardImage,
         @NotBlank String description,
         String source,
         List<CreateSubtitleRequestDto> subtitles,

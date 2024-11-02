@@ -18,6 +18,7 @@ public class ArticleTestUtil {
         article.setId(1L);
         article.setAuthor("author");
         article.setTitle("title");
+        article.setCardImage("image");
         article.setDescription("description");
         article.setSubtitles(Set.of(createTestSubtitle()));
         return article;
@@ -28,6 +29,7 @@ public class ArticleTestUtil {
                 article.getId(),
                 article.getAuthor(),
                 article.getTitle(),
+                article.getCardImage(),
                 article.getDescription()
         );
     }
@@ -50,6 +52,7 @@ public class ArticleTestUtil {
         return new CreateArticleRequestDto(
                 article.getAuthor(),
                 article.getTitle(),
+                article.getCardImage(),
                 article.getDescription(),
                 article.getSource(),
                 List.of(createTestCreateSubtitleRequestDto(createTestSubtitle())),
@@ -60,8 +63,8 @@ public class ArticleTestUtil {
 
     public static List<ArticleCardDto> fillExpectedArticleCardDtoList() {
         List<ArticleCardDto> articleList = new ArrayList<>();
-        articleList.add(new ArticleCardDto(1L, "author1", "title1", "description1"));
-        articleList.add(new ArticleCardDto(2L, "author2", "title2", "description2"));
+        articleList.add(new ArticleCardDto(1L, "author1", "title1", "image1", "description1"));
+        articleList.add(new ArticleCardDto(2L, "author2", "title2", "image2", "description2"));
         return articleList;
     }
 }
