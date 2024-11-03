@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import mate.academy.skillshare.security.internal.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -36,6 +37,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth
+                                .requestMatchers(HttpMethod.GET, "/categories/**",
+                                        "/courses/**", "/reviews/**",
+                                        "/articles/**", "/comments/**")
+                                .permitAll()
                                 .requestMatchers("/auth/**", "/error",
                                         "/swagger-ui/**", "/v3/api-docs/**",
                                         "users/me/resetPassword")

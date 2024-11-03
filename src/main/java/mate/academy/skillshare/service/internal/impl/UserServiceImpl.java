@@ -26,6 +26,7 @@ import mate.academy.skillshare.security.internal.JwtUtil;
 import mate.academy.skillshare.service.internal.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -93,6 +94,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResponseDto addFavouriteCourse(Long userId, Long courseId) {
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new EntityNotFoundException("Can't find user by id: " + userId));
@@ -109,6 +111,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResponseDto removeFavouriteCourse(Long userId, Long courseId) {
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new EntityNotFoundException("Can't find user by id: " + userId));
